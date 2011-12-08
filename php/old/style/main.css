@@ -1,0 +1,107 @@
+body {
+	margin: 0;
+	padding: 0;
+	font-family: helvetica;
+}
+
+.header {
+	width: 100%;
+	height: 50px;
+	background-color: yellow;
+}
+
+.header > .title {
+	float: left;
+	margin: 0;
+	padding: 0 20px;
+	font-size: 10pt;
+}
+
+.header > .search {
+	float: left;
+	padding-top: 10px;
+}
+
+.header > .login {
+	float: right;
+	padding-top: 10px;
+	padding-right: 20px;
+}
+
+.body {
+	width: 760px;
+	margin: 0 auto;
+}
+
+.spacer {
+	visibility: hidden;
+}
+
+.products {
+	list-style-type: none;
+}
+
+.products > .product {
+	height: 100px;
+	font-size: 20px;
+	color: blue;
+	margin-bottom: 20px;
+	overflow: hidden;
+	background-color: lightblue;
+	padding: 7px;
+	-moz-box-shadow: 5px 5px 5px #ccc;
+	-webkit-box-shadow: 5px 5px 5px #ccc;
+	box-shadow: 5px 5px 5px #ccc;
+}
+
+.products > .product > a  {
+	text-decoration: none;
+}
+
+.products > .product > a:visited, .products > .product > a:active {
+	border: none;
+	color: blue;
+}
+
+.products > .product > a > img {
+	float: left;
+	height: 100%;
+}
+
+.products > .product > a > .container {
+	float: left;
+	padding-left: 7px;
+}
+
+.products > .product > a > .container > .name {
+	font-size: 40px;
+}
+
+.products > .product > a > .container > .category {
+	font-size: 15px;
+	margin-top: -7px;
+}
+
+.products > .product > a > .container > div > .rating-background {
+	float: left;
+	width: 150px;
+	height: 30px;
+	background-image: url('../images/backstar.png');
+	background-repeat: repeat-x;
+}
+
+.products > .product > a > .container > div > .rating-background > .rating {
+	height: 300px;
+	background-image: url('../images/star.png');
+	background-repeat: repeat-x;
+}
+
+.products > .product > a > .container > div > .reviews {
+	float: left;
+	margin-top: 13px;
+	font-size: 15px;
+}
+
+.products > .product:last-child {
+	margin: 0;
+}
