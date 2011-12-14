@@ -6,10 +6,10 @@
 	class Settings {
 		function __construct() {
 			if (!file_exists(CONFIG_INI)) {
-				$fileHandle = fopen(CONFIG_INI) or die("Can't open file " . CONFIG_INI);
+				$fileHandle = fopen(CONFIG_INI,'w+') or die("Can't open file " . CONFIG_INI);
 				fclose($fileHandle);
 			}
-			$this->settings = parse_ini_file("configuration.ini");
+			$this->settings = parse_ini_file(CONFIG_INI);
 			$this->has_sections = false;
 		}
 		
@@ -102,17 +102,17 @@
 					else $content .= $key2." = \"".$elem."\"\n";
 				}
 			}
-			$fileHandle = fopen(CONFIG_INI) or die("Can't open file " . CONFIG_INI);
+			$fileHandle = fopen(CONFIG_INI,'w') or die("Can't open file " . CONFIG_INI);
 			fwrite($fileHandle, $content) or die ("Can't write changes to config file");
 			fclose($fileHandle);
 		}
-	}
-	
-	/**
-	 * deleteSettings - Deletes settings and removes the config ini
-	 */
-	function deleteSettings() {
-		$this->settings = array();
-		@unlink(CONFIG_INI);
+		/**
+		 * deleteSettings - Deletes settings and removes the config ini
+		 */
+		function deleteSettings() {
+			$this->settings = array();
+			//fclose(fopen(CONFIG_INI,'w'));
+			//@unlink(CONFIG_INI);
+		}
 	}
 ?>

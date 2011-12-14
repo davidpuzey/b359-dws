@@ -83,7 +83,8 @@ function handle_input($input) {
 
 function send_object($object,$uuid,$timeout = 3000000) {
 	if ($record = nodeData::getInstance()->get_data_record($uuid)) {
-		return send_object_direct($object,$record['address'],$record['port'],$timeout);
+		return send_object_direct($object,$record[3],$record[4],$timeout);
+		//return send_object_direct($object,$record['address'],$record['port_tcp'],$timeout);
 	} else {
 		throw new Exception("Invalid UUID");
 	}

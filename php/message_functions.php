@@ -13,14 +13,14 @@
 		
 	// Retrieve necessary items from the database
 	$db = new dbConnection;
-	$result = $db->query("SELECT port, uri, server_name, server_type FROM dws_nodes WHERE uuid = ".$use_this_uuid);
-	
+	$result = $db->query("SELECT port_tcp, port_udp, uri, server_name, server_type FROM dws_nodes WHERE uuid = ".$use_this_uuid);
 	
 	// Add host_name, port and uri to the message
 	$obj = message_object_create("hello");
 	$obj->host_name = $_SERVER['SERVER_NAME'];
 	$obj->server_name = $result[0]['server_name'];
-	$obj->port = $result[0]['port'];
+	$obj->port_tcp = $result[0]['port_tcp'];
+	$obj->port_udp = $result[0]['port_udp'];
 	$obj->uri = $result[0]['uri'];
 	$obj->return_list = $return_list;
 	
@@ -34,7 +34,7 @@
 	$reply = send_object($obj,$uuid);
 	unset($obj);
 	unset($db);
-	return get_object_from_response($reply);
+	return $reply;
 }
 
 /**
@@ -47,7 +47,7 @@ function broadcast_send_hello($return_list = false, $use_this_uuid = null){
 		
 	// Retrieve necessary items from the database
 	$db = new dbConnection;
-	$nodes = $db->query("SELECT uuid, host_name, port, uri FROM dws_nodes");
+	$nodes = $db->query("SELECT uuid, host_name, port_tcp, uri FROM dws_nodes");
 	foreach ($nodes as $node) {
 		message_send_hello($uuid,$return_list,$use_this_uuid);
 	}
@@ -78,7 +78,7 @@ function message_send_matrix($uuid,$return_list = false,$use_this_uuid = false) 
 	$reply = send_object($obj,$uuid);
 	unset($obj);
 	unset($db);
-	return get_object_from_response($reply);
+	return $reply;
 }
 
 function message_send_goodbye($uuid) {

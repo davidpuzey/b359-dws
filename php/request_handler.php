@@ -1,4 +1,4 @@
-<?
+<?php
 include("functions.php");
 
 $hero = false;

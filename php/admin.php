@@ -33,12 +33,12 @@ require 'functions.php';
 			<p>Name: <i><?php echo SERVER_NAME ?></i><br />
 			UUID: <i><?php echo UUID ?></i><br />
 			Type: <i><?php echo type_decode(SERVER_TYPE); ?></i></p>
-			<img src="get_pic.php?pic=<? echo strtolower(SERVER_NAME); ?>">
+			<img src="get_pic.php?pic=<?php echo strtolower(SERVER_NAME); ?>">
 			<?php
 		} else {
 			?>
 			<p class='red'>Not configured.</p>
-			<?
+			<?php
 		}
 		?>
 	</body>

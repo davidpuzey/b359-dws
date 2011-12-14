@@ -1,4 +1,4 @@
-<?
+<?php
 	include("functions.php");
 	requireDbSetup();
 	$id = get_get_data('id', -1);
@@ -20,7 +20,7 @@
 <!doctype html>
 <html>
 <head>
-	<title><?echo $product['name'];?> - Awesome Review Servers R Us</title>
+	<title><?php echo $product['name'];?> - Awesome Review Servers R Us</title>
 	<link rel="stylesheet" href="style/main.css" type="text/css">
 	<script>
 		function showAddReview() {
@@ -40,23 +40,23 @@
 	</script>
 </head>
 <body>
-	<?include("header.php")?>
+	<?php include("header.php")?>
 	<div class="body">
-	<?if ($error) {?>
-	<div class="error"><?echo $error?></div>
-	<?die();
+	<?php if ($error) {?>
+	<div class="error"><?php echo $error?></div>
+	<?php die();
 	}?>
-	<h1><?echo $product['name'];?></h1>
-	<img width="200px" src="<?echo $product['image_url'];?>">
-	<div>Category: <?echo $product['category'];?></div>
-	<div>Rating: <?echo $product['rating'];?></div>
-	<img href="<?echo $product['image_url'];?>">
-	<div><?echo $product['description'];?></div>
+	<h1><?php echo $product['name'];?></h1>
+	<img width="200px" src="<?php echo $product['image_url'];?>">
+	<div>Category: <?php echo $product['category'];?></div>
+	<div>Rating: <?php echo $product['rating'];?></div>
+	<img href="<?php echo $product['image_url'];?>">
+	<div><?php echo $product['description'];?></div>
 	<p />
 	<h2>Reviews:</h2>
-	<div id="make_new_review"><a href="add_review.php?product_id=<?echo $id;?>&node_id=<?echo $node_id;?>" onClick="showAddReview(); return false;">Add Review</a></div>
+	<div id="make_new_review"><a href="add_review.php?product_id=<?echo $id;?>&node_id=<?php echo $node_id;?>" onClick="showAddReview(); return false;">Add Review</a></div>
 	<div id="new_review" style="display: none;">
-		<form action="add_review.php?product_id=<?echo $id;?>&node_id=<?echo $node_id;?>" method="post">
+		<form action="add_review.php?product_id=<?php echo $id;?>&node_id=<?php echo $node_id;?>" method="post">
 			<input type="hidden" name="add" value="true">
 			<label>Rating: <select name="rating">
 				<option value="0">0
@@ -72,15 +72,15 @@
 		</form>
 	</div>
 	<ol class="reviews">
-	<?for ($i = count($reviews)-1; $i >= 0; $i--) {
+	<?php for ($i = count($reviews)-1; $i >= 0; $i--) {
 		$review = (array) $reviews[$i];
 	?>
 		<li class="review">
-			<div class="description"><?echo $review['review'];?></div>
-			<div class="rating-background"><div class="rating" style="width: <?echo ($review['rating']*20);?>%"></div><?echo $review['rating'];?></div>
-			<div class="user">Posted by <?echo $review['username'];?></div>
+			<div class="description"><?php echo $review['review'];?></div>
+			<div class="rating-background"><div class="rating" style="width: <?php echo ($review['rating']*20);?>%"></div><?php echo $review['rating'];?></div>
+			<div class="user">Posted by <?php echo $review['username'];?></div>
 		</li>
-	<?}?>
+	<?php }?>
 	</ol>
 	</div>
 </body>

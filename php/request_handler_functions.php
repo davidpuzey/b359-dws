@@ -1,4 +1,4 @@
-<?
+<?php
 	/**
 	 * response_to_object - Converts a response string to an object
 	 *						while checking that the reponse is

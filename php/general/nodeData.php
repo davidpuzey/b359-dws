@@ -77,7 +77,8 @@ class nodeData {
 	function add_node() {
 		// Check a UUID exists
 		$node_data = func_get_args();
-		if (!$new_uuid = $node_data[0]) {
+		$new_uuid = $node_data[0];
+		if ($new_uuid != 0 && !$new_uuid) {
 			throw new Exception("No UUID supplied");
 		}
 		
@@ -88,6 +89,7 @@ class nodeData {
 		
 		// Update the database
 		$imploded = "'".implode("','",$node_data)."'";
+		echo("\n\nINSERT INTO dws_nodes VALUES (".$imploded.")\n\n");
 		$this->db->query("INSERT INTO dws_nodes VALUES (".$imploded.")");
 		
 		// Update our array

@@ -42,6 +42,7 @@ function create_database() {
 	$sql[] = "CREATE TABLE dws_message_queue(id integer PRIMARY KEY, message text, num_failures integer, timestamp integer);";
 	
 	// Stores review servers and clients
+	//uuid server_type server_name host_name port_tcp port_udp port_http uri last_response num_failures is_up
 	$sql[] = "CREATE TABLE dws_nodes(uuid integer, server_type text, server_name text, host_name text, port_tcp integer, port_udp integer, port_http integer, uri text, last_response integer, num_failures integer, is_up integer, PRIMARY KEY (uuid))";
 
 	// Which clients talk to which review servers
@@ -81,7 +82,7 @@ function store_metadata($server_name, $uuid, $port, $uri) {
 	$last_response = time();
 	$num_failures = 0;
 	$is_up = 1;
-	$query = "INSERT INTO dws_nodes (uuid, server_type, server_name, host_name, port, uri, last_response, num_failures, is_up) VALUES ('$uuid', '$server_type', '$server_name', '$host_name', '$port', '$uri', '$last_response', '$num_failures', '$is_up')";
+	$query = "INSERT INTO dws_nodes (uuid, server_type, server_name, host_name, port_tcp, port_udp, port_http, uri, last_response, num_failures, is_up) VALUES ('$uuid', '$server_type', '$server_name', '$host_name', '0', '0', '$port', '$uri', '$last_response', '$num_failures', '$is_up')";
 	//$result = sqlite_query($dbhandle,$query);
 	$result = $db->query($query);
 	
@@ -94,20 +95,20 @@ function setup_form() {
 	$default_name = $pokemon[rand(0,count($pokemon)-1)];
 	$default_name_ucfirst = ucfirst($default_name);
 	?>
-	<form action="<? echo "http://".$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI']; ?>" method="post">
+	<form action="<?php echo "http://".$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI']; ?>" method="post">
 	
-		<p>Server name: <input type="text" name="server_name" value="<? echo $default_name_ucfirst; ?>"/><br />
-		<img src="http://img.pokemondb.net/artwork/<? echo $default_name; ?>.jpg">
-		<p>Server UUID: <input type="text" name="uuid" value="<? echo rand(0,2147483647); ?>"/> (0 to 2147483647, inclusive)<br />
-		<p>Server port: <input type="text" name="port" value="<? echo $_SERVER['SERVER_PORT']; ?>"/><br />
-		<p>Server root: <input type="text" name="root" value="<? echo dirname($_SERVER['REQUEST_URI']);?>/"/><br />
+		<p>Server name: <input type="text" name="server_name" value="<?php echo $default_name_ucfirst; ?>"/><br />
+		<img src="http://img.pokemondb.net/artwork/<?php echo $default_name; ?>.jpg">
+		<p>Server UUID: <input type="text" name="uuid" value="<?php echo rand(0,2147483647); ?>"/> (0 to 2147483647, inclusive)<br />
+		<p>Server port: <input type="text" name="port" value="<?php echo $_SERVER['SERVER_PORT']; ?>"/><br />
+		<p>Server root: <input type="text" name="root" value="<?php echo dirname($_SERVER['REQUEST_URI']);?>/"/><br />
 		<p>Server type:<br />
 		<input type="radio" name="server_type" value="Client" checked="checked" /> Client<br />
 		<input type="radio" name="server_type" value="Node" /> Node</p>
 		
 		<p>Network node:<br />
 		<input type="radio" name="first_in_network" value="Yes" />This is the first node of the network.<br />
-		<input type="radio" name="first_in_network" value="No" checked="checked" /> Connect to this network node: <input type="text" name="network_node" size="100" value="http://something.com/folder/request_handler.php"/></p>
+		<input type="radio" name="first_in_network" value="No" checked="checked" /> Connect to this network node <br /> IP: <input type="text" name="network_node_ip" size="100" value="127.0.0.1"/><br /> TCP port: <input type="text" name="network_node_port" size="100" value="23118"/></p>
 		
 		<p><input name="submit" type="submit" value="Initiate setup routine"></p>
 		
@@ -115,11 +116,15 @@ function setup_form() {
 	<?php
 }
 
-function connect_to_network($network_node,$my_uuid) {
-	die("You need to fix this to use sockets");
-	/*
+function connect_to_network($network_node_ip,$network_node_port,$my_uuid) {
+	
+	// Create a temporary node with our IP and port, then use it to send the messages
+	$temp_uuid = 0;
+	nodeData::getInstance()->add_node($temp_uuid,"Temp","Temp",$network_node_ip,"$network_node_port",0,0,"/",time(),0,0);
+	
+	
 	// second argument is true, meaning it asks for a list of all nodes to be returned
-	$reply = message_send_hello($network_node,true,$my_uuid);
+	$reply = message_send_hello($temp_uuid,true,$my_uuid);
 	
 	if ($reply->success == "true") {
 		// If client, add the review server's uuid it just contacted to the node matrix
@@ -129,13 +134,13 @@ function connect_to_network($network_node,$my_uuid) {
 			node_matrix_set($my_uuid,$node_uuid);
 			
 			echo("<p>Sharing node matrix...</p>");
-			message_send_matrix($network_node, true, $my_uuid);
+			message_send_matrix($temp_uuid, true, $my_uuid);
 		}
 		
 		// If server, request a copy of the node matrix
 		// This works by sending our empty matrix and requesting theirs in return!
 		if ($_POST['server_type'] == "Node") {
-			message_send_matrix($network_node, true, $my_uuid);
+			message_send_matrix($temp_uuid, true, $my_uuid);
 		}
 		
 		// Add all the nodes
@@ -145,13 +150,16 @@ function connect_to_network($network_node,$my_uuid) {
 		echo("<p>Broadcasting existence to network...</p>");
 		broadcast_send_hello(false,$my_uuid);
 		
+		// Remove the temporary 
+		nodeData::getInstance()->remove_node($temp_uuid);
+		
 		return 1;
 	} else {
 		echo("<p class='warning'>Failed to connect to network.</p>");
 		echo("<p>Reason: ".$reply->info."</p>");
 		return 0;
 	}
-	*/
+	
 }
 
 
@@ -179,8 +187,13 @@ if (check_database_exists()) {
 			$retry = 1;
 		}
 		
-		if (empty($_POST['network_node'])) {
-			echo("<p class='error'>Enter a network node.</p>");
+		if (empty($_POST['network_node_ip'])) {
+			echo("<p class='error'>Enter a network node IP.</p>");
+			$retry = 1;
+		}
+		
+		if (empty($_POST['network_node_port'])) {
+			echo("<p class='error'>Enter a network node TCP port.</p>");
 			$retry = 1;
 		}
 		
@@ -239,7 +252,7 @@ if (check_database_exists()) {
 			$connected = 0;
 			if ($_POST['first_in_network'] == "No") {
 				echo("<p>Connecting to network...</p>");
-				if (connect_to_network($_POST['network_node'],$_POST['uuid'])) {
+				if (connect_to_network($_POST['network_node_ip'],$_POST['network_node_port'],$_POST['uuid'])) {
 					$connected = 1;
 				}
 			} else {

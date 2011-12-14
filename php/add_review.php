@@ -27,14 +27,14 @@
 <link rel="stylesheet" href="style/main.css" type="text/css">
 </head>
 <body>
-<?include("header.php")?>
+<?php include("header.php")?>
 <div class="body">
-	<?
+	<?php
 		if (isset($error)) {
 			echo "<div class='error'>Error: $error</div>";
 		}
 	?>
-	<form action="add_review.php?product_id=<?echo $id;?>&node_id=<?echo $node_id;?>" method="post">
+	<form action="add_review.php?product_id=<?php echo $id;?>&node_id=<?php echo $node_id;?>" method="post">
 		<input type="hidden" name="add" value="true">
 		<label>Rating: <select name="rating">
 			<option value="0">0

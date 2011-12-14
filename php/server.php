@@ -158,9 +158,10 @@ function handle_incoming_connections() {
 	while ($newclient = $mysock_tcp->accept()) {
 		$newclient->set_blocking(true);
 		$input = $newclient->read();
+		println("\n\nClient connected\n\n");
+		println("\n\nSending response\n\n");
 		$response = handle_message($input);
 		$newclient->write($response);
-		var_dump($response);
 		usleep(100);
 	}
 	

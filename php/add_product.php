@@ -1,4 +1,4 @@
-<?
+<?php
 	include("functions.php");
 	requireDbSetup();
 	
@@ -25,9 +25,9 @@
 <link rel="stylesheet" href="style/main.css" type="text/css">
 </head>
 <body>
-<?include("header.php")?>
+<?php include("header.php")?>
 <div class="body">
-	<?
+	<?php
 		if (isset($error)) {
 			echo "<div class='error'>Error: $error</div>";
 		}
