@@ -33,7 +33,7 @@ $serving = false;
 $mysock_tcp = null;
 $mysock_udp = null;
 $database = new configureDatabase;
-$database->setup(REVIEW_SERVER);
+$database->setup(SERVER_REVIEW);
 
 //nodeData::getInstance()->add_node(456,"Node","CPE1704TKS","something",123456,"/location/",time(),7,1);
 

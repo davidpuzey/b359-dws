@@ -1,13 +1,10 @@
 <?php
 
-define("REVIEW_SERVER",0);
-define("CLIENT_SERVER",1);
-
 // require('dbConnection.php);
 class configureDatabase {
 	function setup($server_type) {
 		if (!$this->is_setup()) {
-			if ($server_type == REVIEW_SERVER) {
+			if ($server_type == SERVER_REVIEW) {
 				$sql[] = "CREATE TABLE dws_products(id integer, node_id integer, user_id text, name text, description text, image_url text, category text, rating real, timestamp integer, PRIMARY KEY (id, node_id))";
 				$sql[] = "CREATE TABLE dws_reviews(id integer, node_id integer, product_id text, user_id text, review text, rating integer, timestamp integer, PRIMARY KEY (id, node_id))";
 				$sql[] = "CREATE TABLE dws_users(id integer, node_id integer, name text, password text, email text, time_joined integer, PRIMARY KEY (id, node_id))";

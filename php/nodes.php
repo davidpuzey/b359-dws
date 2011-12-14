@@ -1,7 +1,7 @@
 
 <?php
 require('functions.php');
-if (isset($_POST['update_primary_node']) && SERVER_TYPE == CLIENT_SERVER) {
+if (isset($_POST['update_primary_node']) && SERVER_TYPE == SERVER_CLIENT) {
 	echo("<h2>Updating Primary Node</h2>");
 	$obj = node_matrix_change_primary($_POST['primary']);
 	if ($obj->success == "true") {
@@ -15,7 +15,7 @@ if (isset($_POST['update_primary_node']) && SERVER_TYPE == CLIENT_SERVER) {
 	if (check_database_exists()) {
 		$db = new dbConnection;
 		
-		if (SERVER_TYPE == CLIENT_SERVER) {
+		if (SERVER_TYPE == SERVER_CLIENT) {
 			// Work out which one is our primary
 			$result = $db->query("SELECT review_uuid FROM dws_node_matrix WHERE client_uuid = ".UUID);
 			if (count($result) > 0) {
@@ -40,7 +40,7 @@ if (isset($_POST['update_primary_node']) && SERVER_TYPE == CLIENT_SERVER) {
 			echo("<td>".$row['last_response']."</td>");
 			echo("<td>".$row['num_failures']."</td>");
 			echo("<td>".$row['is_up']."</td>");
-			if (SERVER_TYPE == CLIENT_SERVER && $row['server_type'] == REVIEW_SERVER) {
+			if (SERVER_TYPE == SERVER_CLIENT && $row['server_type'] == SERVER_REVIEW) {
 				if ($primary_uuid == $row['uuid']) {
 					$c = "checked";
 				} else {
@@ -53,7 +53,7 @@ if (isset($_POST['update_primary_node']) && SERVER_TYPE == CLIENT_SERVER) {
 			echo("</tr>");
 			}
 		echo("</table>");
-		if (SERVER_TYPE == CLIENT_SERVER) {
+		if (SERVER_TYPE == SERVER_CLIENT) {
 			echo('<input type="submit" name="update_primary_node" value="Update primary node" />');
 		}
 		echo("</form>");

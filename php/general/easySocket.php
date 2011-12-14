@@ -1,8 +1,5 @@
 <?php
 
-define("SOCKET_SERVER",true);
-define("SOCKET_CLIENT",false);
-
 class easySocket {
 	/**
 	 * basic_socket($address, $port, $protocol, SOCKET_SERVER)

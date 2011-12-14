@@ -132,7 +132,7 @@
 	 */
 	function get_num_review_servers() {
 		$db = new dbConnection;
-		$result = $db->query("SELECT uuid FROM dws_nodes WHERE server_type = ".REVIEW_SERVER);
+		$result = $db->query("SELECT uuid FROM dws_nodes WHERE server_type = ".SERVER_REVIEW);
 		$num = count($result);
 		unset($db);
 		unset($result);
@@ -172,7 +172,7 @@
 		
 		// Choose a random unvisited server
 		$db = new dbConnection;
-		$result = $db->query("SELECT uuid FROM dws_nodes WHERE server_type = ".REVIEW_SERVER." AND is_up = 1 AND uuid NOT IN (".implode(", ",$visited).")");
+		$result = $db->query("SELECT uuid FROM dws_nodes WHERE server_type = ".SERVER_REVIEW." AND is_up = 1 AND uuid NOT IN (".implode(", ",$visited).")");
 		if (count($result) > 0) {
 			$next_dest = $result[rand(0,count($result)-1)]['uuid'];
 			array_push($visited,$next_dest);
@@ -388,11 +388,11 @@
 	 * Add server specific objects
 	 */
 	switch (SERVER_TYPE) {
-		case CLIENT_SERVER:
+		case SERVER_CLIENT:
 			add_autoloader_dir("ClientObjects/");
 			include("client_functions.php");
 			break;
-		case REVIEW_SERVER:
+		case SERVER_REVIEW:
 			add_autoloader_dir("ReviewObjects/");
 			include("review_functions.php");
 			break;
@@ -400,10 +400,10 @@
 	
 	function type_decode($t) {
 		switch ($t) {
-			case CLIENT_SERVER:
+			case SERVER_CLIENT:
 				return "Client Server";
 			break;
-			case REVIEW_SERVER:
+			case SERVER_REVIEW:
 				return "Review Server";
 			break;
 		}

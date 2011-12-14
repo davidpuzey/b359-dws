@@ -6,7 +6,7 @@
 			if ($this->checkErrors())
 				return false;
 			
-			$result = $this->query("SELECT uuid FROM dws_nodes WHERE uuid = '$review_uuid' AND server_type = '".REVIEW_SERVER."'");
+			$result = $this->query("SELECT uuid FROM dws_nodes WHERE uuid = '$review_uuid' AND server_type = '".SERVER_REVIEW."'");
 			if ($result === false || count($result) <= 0) {
 				$this->addError("Review server '$review_uuid' doesn't exist.");
 				return false;
