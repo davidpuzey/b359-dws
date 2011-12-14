@@ -122,10 +122,12 @@
 		return @file_get_contents($dest, false, $context);
 	}
 	
+	/*
 	// Sends a generic object
 	function message_send($cmd, $dest, $options = null) {
 		return object_send(message_object_create($cmd, $options), $dest);
 	}
+	*/
 	
 	/**
 	 * Returns the number of review servers we are aware of
@@ -194,7 +196,7 @@
 	}
 	
 	function message_send_by_id($cmd, $uuid, $options = null) {
-		return object_send(message_object_create($cmd, $options), get_dest_from_uuid($uuid)."request_handler.php");
+		return send_object(message_object_create($cmd, $options), $uuid);
 	}
 	
 	/**

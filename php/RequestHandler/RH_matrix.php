@@ -19,9 +19,9 @@
 			
 			// Return the list to them
 			if ($return_list === true) {
-				$dest = get_dest_from_uuid($uuid)."request_handler.php";
+				//$dest = get_dest_from_uuid($uuid)."request_handler.php";
 				if ($dest) {
-					$reply = message_send_matrix($dest, false);
+					$reply = message_send_matrix($uuid, false);
 				} else {
 					$this->appendInfo("Supplied uuid $uuid is not in our dws_nodes table");
 					return false;

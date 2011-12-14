@@ -1,9 +1,8 @@
 <?php
+// PIECE OF JUNK THAT WE ARE NOT USING ANY MORE
+/*
 require('functions.php');
 
-/**
- * This processes all items in dws_message_queue, and sends them to all other servers in dws_nodes except itself
- */
 $db = new dbConnection;
 $queue = $db->query("SELECT id, message, num_failures FROM dws_message_queue");
 $nodes = $db->query("SELECT uuid FROM dws_nodes WHERE uuid <> ".UUID);
@@ -29,4 +28,5 @@ foreach ($queue as $item) {
 		}
 	}
 }
+*/
 ?>
