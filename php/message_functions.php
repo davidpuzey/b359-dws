@@ -49,7 +49,7 @@ function broadcast_send_hello($return_list = false, $use_this_uuid = null){
 	$db = new dbConnection;
 	$nodes = $db->query("SELECT uuid, host_name, port_tcp, uri FROM dws_nodes");
 	foreach ($nodes as $node) {
-		message_send_hello($uuid,$return_list,$use_this_uuid);
+		message_send_hello($node['uuid'],$return_list,$use_this_uuid);
 	}
 }
 
