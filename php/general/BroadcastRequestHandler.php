@@ -1,5 +1,14 @@
 <?php
+	/**
+	 * BroadcastRequestHandler -	Will broadcast the command to
+	 *								all other nodes.
+	 */
 	class BroadcastRequestHandler extends RequestHandler {
+		/**
+		 * broadcast -	Takes the command object and sends it out
+		 *				to all other nodes, assuming the command
+		 *				has not already been broadcast.
+		 */
 		function broadcast() {
 			if ($this->getParam('is_broadcast', false) == "true")
 				return true;
@@ -11,6 +20,9 @@
 			$this->query("INSERT INTO dws_message_queue (message, timestamp) VALUES ('$message', '$timestamp')");
 		}
 		
+		/**
+		 * process - Remake of the process method to add boardcast.
+		 */
 		function process() {
 			parent::process();
 			$this->broadcast();

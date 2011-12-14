@@ -1,5 +1,15 @@
 <?php
+	/**
+	 * CreepRequestHandler -	Will send the command onto one other
+	 *							node that has not already received
+	 *							the command, unless the maximum
+	 *							number of nodes that need to be
+	 *							visted have been.
+	 */
 	class CreepRequestHandler extends RequestHandler {
+		/**
+		 * creep - The method that performs the creeping.
+		 */
 		function creep() {
 			if (!$this->getParam('is_creeping', false)) {
 				$this->setParam('is_creeping', true);
@@ -18,6 +28,9 @@
 			$result = array_merge($result, $creep_result['result']);
 		}
 		
+		/**
+		 * process - Rewrite of the process method to include creep.
+		 */
 		function process() {
 			parent::process();
 			#$this->creep();

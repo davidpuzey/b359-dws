@@ -1,4 +1,10 @@
 <?php
+	/**
+	 * dbConnection -	Handle database connection stuff.
+	 * Constructor opens the database, if the native functions odn't
+	 * work then we will attempt to use PDO.
+	 * Destructor closes the database.
+	 */
 	class dbConnection {
 		function __construct() {
 			// If normal SQLite does not work, resort to PDO
@@ -24,6 +30,13 @@
 			}
 		}
 		
+		/**
+		 * query - Process a given sql string.
+		 * Parameters:
+		 *		$sql (string)	The sql string to apply to the
+		 *						database.
+		 * Returns the result from the sql processing.
+		 */
 		function query($sql) {
 			if ($this->using_pdo) {
 				$sth = $this->dbhandle->prepare($sql);
