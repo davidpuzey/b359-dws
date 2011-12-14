@@ -62,7 +62,7 @@ function handle_input($input) {
 			println("info                             : Display current IP and port configuration.");
 			println("clear                            : Blankity blanks everywhere.");
 			break;
-		case "hello":
+		case "cmd":
 			if (count($all_input) >= 4) {
 				$message = $all_input[1];
 				$address = $all_input[2];
@@ -71,7 +71,7 @@ function handle_input($input) {
 				try {
 					$mysock = new easySocket($address,$port,SOL_TCP,false);
 					$mysock->set_blocking(true);
-					$mysock->write($message);
+					$mysock->write(object_to_response(array("cmd" => $message)));
 				} catch (Exception $e) {
 					echo("Failed to send message. Error: ".$e->getMessage()."\n");
 				}

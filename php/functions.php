@@ -276,6 +276,8 @@
 			return $result[0];
 		}
 	}
+	
+	/*
 	if (check_database_exists()) {
 		$details = get_my_details();
 		define("UUID", $details['uuid']);
@@ -284,14 +286,14 @@
 		define("HOST_NAME", $details['host_name']);
 		define("PORT", $details['port']);
 		define("URI", $details['uri']);
-	} else {
+	} else {*/
 		define("UUID", -1);
 		define("SERVER_TYPE", -1);
 		define("SERVER_NAME", null);
 		define("HOST_NAME", null);
 		define("PORT", -1);
 		define("URI", null);
-	}
+	/*}*/
 	
 	/**
 	 * $nodes is an object containing lots of nodes to be added to dws_nodes

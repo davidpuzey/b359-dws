@@ -15,8 +15,8 @@
 		if (count($response_array) != 2)
 			return new ErrorHandler("Either no hash or no JSON.");
 		
-		$hash = $response_array[1];
-		$json = $response_array[2];
+		$hash = $response_array[0];
+		$json = $response_array[1];
 		
 		// Check that the given hash matches as it should
 		if ($hash != make_hash($json))
@@ -63,13 +63,19 @@
 			return object_to_response($error_handler_obj->makeRequestHandlerObject());
 		}
 		
+		
 		// Process relevant command
 		$class = "RH_".$obj->cmd;
+		if (!file_exists("RequestHandler/".$class.".php")) {
+			$error_handler_obj = new ErrorHandler("Command {$obj->cmd} does not exist.");
+			return object_to_response($error_handler_obj->makeRequestHandlerObject());
+		}
+		
 		$cmd_obj = new $class($obj);
 		$response = $cmd_obj->process();
 		if (!asObj)
 			$response = object_to_response($response);
-		
-		return $response;
+			
+	return $response;
 	}
 ?>
