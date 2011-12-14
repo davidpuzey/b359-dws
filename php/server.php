@@ -4,6 +4,7 @@ define("TIMEOUT",20);
 define("DEBUG",false);
 
 require('functions.php');
+add_autoloader_dir('RequestHandler');
 /*
 // Functions
 require('println.php');
@@ -154,23 +155,13 @@ function handle_incoming_connections() {
 	global $mysock_udp;
 	global $num_clients;
 	
-	/*
-	if ($newclient = $mysock_tcp->accept()) {
-		array_push($clientConnections,new clientConnection($newclient));
-		$newclient->write("You connected successfully!");
-	}
-	*/
-	if ($newclient = $mysock_tcp->accept()) {
-		println("Client connected");
+	while ($newclient = $mysock_tcp->accept()) {
 		$newclient->set_blocking(true);
 		$input = $newclient->read();
-		println("Client says $input");
 		$response = handle_message($input);
 		$newclient->write($response);
-		sleep(1);
-		println("Sent response $response");
-		sleep(1);
-		$newclient = null;
+		var_dump($response);
+		usleep(100);
 	}
 	
 	if ($data = $mysock_udp->receive(8)) {
@@ -198,11 +189,7 @@ function listen_to_clients() {
 	}
 }
 */
-/*
-function handle_message($message) {
-	return $message;
-}
-*/
+
 /*
 function broadcast_heartbeat() {
 	global $clientConnections;

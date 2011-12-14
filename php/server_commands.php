@@ -71,21 +71,19 @@ function handle_input($input) {
 				try {
 					$mysock = new easySocket($address,$port,SOL_TCP,false);
 					$mysock->set_blocking(true);
+					
+					// Set timeout to 4.5 seconds
+					$mysock->set_receive_timeout(4500000);
 					$mysock->write(object_to_response(array("cmd" => $message)));
 				} catch (Exception $e) {
 					echo("Failed to send message. Error: ".$e->getMessage()."\n");
 				}
-				
-				while ($mysock) {
-					//usleep(10000);
+				if ($mysock)
 					$input = $mysock->read();
-					if(empty($input)) {
-						//println("Received no response");
-					} else {
-						println("Received: ".$input);
-						$mysock = null;
-					}
-				}
+				else
+					$input = null;
+				
+				var_dump($input);
 			}
 			break;
 		default:

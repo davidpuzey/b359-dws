@@ -65,11 +65,25 @@ class easySocket {
 		}
 	}
 	
+	/**
+	 * Set whether the socket is blocking (true) or non-blocking (false)
+	 */
 	function set_blocking($b) {
 		if ($b)
 			socket_set_block($this->mysock);
 		else
 			socket_set_nonblock($this->mysock);
+	}
+	
+	/**
+	 * Set the timeout in microseconds
+	 * e.g. 450000000 = 4.5 seconds
+	 */
+	function set_receive_timeout($us) {
+		$usec = $us % 1000000;
+		$sec = floor(($us-$usec)/1000000);
+		$timeout = array("sec"=>$sec,"usec"=>$usec);
+		socket_set_option($this->mysock,SOL_SOCKET,SO_RCVTIMEO,$timeout);
 	}
 	
 	/**

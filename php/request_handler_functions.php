@@ -73,7 +73,7 @@
 		
 		$cmd_obj = new $class($obj);
 		$response = $cmd_obj->process();
-		if (!asObj)
+		if (!$asObj)
 			$response = object_to_response($response);
 			
 	return $response;
