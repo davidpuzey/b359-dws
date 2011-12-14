@@ -8,13 +8,13 @@ require('println.php');
 require('server_commands.php');
 
 // Objects
-require('dbConnection.php');
-require('easySocket.php');
-require('IOStream.php');
-require('basicTimer.php');
-require('clientConnection.php');
-require('nodeData.php');
-require('configureDatabase.php');
+require('general/dbConnection.php');
+require('general/easySocket.php');
+require('general/IOStream.php');
+require('general/basicTimer.php');
+require('general/clientConnection.php');
+require('general/nodeData.php');
+require('general/configureDatabase.php');
 
 // Globals
 $address = "127.0.0.1";
