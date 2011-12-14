@@ -15,9 +15,15 @@
 			$this->setParam('is_broadcast', "true");
 			if ($this->getParam('send_to_all', false) != "true")
 				$this->setParam('send_to_all', "false");
-			$message = json_encode($this->obj);
-			$timestamp = time();
-			$this->query("INSERT INTO dws_message_queue (message, timestamp) VALUES ('$message', '$timestamp')");
+			#$message = json_encode($this->obj);
+			#$timestamp = time();
+			#$this->query("INSERT INTO dws_message_queue (message, timestamp) VALUES ('$message', '$timestamp')");
+			$nodes = nodeData::getInstance()->get_all_data();
+			foreach ($nodes as $node) {
+				if ($node['server_type'] == SERVER_REVIEW) {
+					send_object($this->obj, $node['uuid']);
+				}
+			}
 		}
 		
 		/**

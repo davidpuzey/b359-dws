@@ -27,13 +27,32 @@ class nodeData {
 	}
 	
 	function get_data($uuid,$data) {
+		$node_data = $this->get_data_record($uuid);
+		if (!array_key_exists($data,$node_data)) {
+			throw new Exception("Invalid data");
+		}
+		return $node_data[$data];		
+	}
+	
+	/**
+	 * get_data_record - Get a record from a given uuid
+	 * Parameters:
+	 *		$uuid (integer)	The uuid of the record to return
+	 * Returns the record for uuid given.
+	 */
+	function get_data_record($uuid) {
 		if (!array_key_exists($uuid,$this->node_data)) {
 			throw new Exception("Invalid UUID");
 		}
-		if (!array_key_exists($data,$this->node_data[$uuid])) {
-			throw new Exception("Invalid data");
-		}
-		return $this->node_data[$uuid][$data];		
+		return $this->node_data[$uuid];
+	}
+	
+	/**
+	 * get_all_data - Returns all nodes.
+	 * Returns all nodes
+	 */
+	function get_all_data() {
+		return $this->node_data;
 	}
 	
 	function set_data($uuid,$data,$value) {

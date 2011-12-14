@@ -30,6 +30,8 @@
 		
 		/**
 		 * process - Rewrite of the process method to include creep.
+		 * TODO
+		 * Once the system is ready for creep we can enable it.
 		 */
 		function process() {
 			parent::process();
