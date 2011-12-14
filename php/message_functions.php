@@ -6,7 +6,7 @@
  * $dest then gets all nodes in its dws_nodes to say hello back
  * Set $return_list to true and $dest will reply with a list containing its dws_nodes table
  */
- function message_send_hello($dest, $return_list = false, $use_this_uuid = null) {
+ function message_send_hello($uuid, $return_list = false, $use_this_uuid = null) {
 	// Use the defined UUID if none is specified
 	if (!isset($use_this_uuid))
 		$use_this_uuid = UUID;
@@ -31,7 +31,7 @@
 	$obj->type = (integer) $result[0]['server_type'];
 
 	// Send object, clear objects and return the reply
-	$reply = object_send($obj,$dest);
+	$reply = send_object($obj,$uuid);
 	unset($obj);
 	unset($db);
 	return get_object_from_response($reply);
@@ -47,17 +47,16 @@ function broadcast_send_hello($return_list = false, $use_this_uuid = null){
 		
 	// Retrieve necessary items from the database
 	$db = new dbConnection;
-	$nodes = $db->query("SELECT host_name, port, uri FROM dws_nodes");
+	$nodes = $db->query("SELECT uuid, host_name, port, uri FROM dws_nodes");
 	foreach ($nodes as $node) {
-		$dest = compile_request_handler_URL($node['host_name'],$node['port'],$node['uri']);
-		message_send_hello($dest,$return_list,$use_this_uuid);
+		message_send_hello($uuid,$return_list,$use_this_uuid);
 	}
 }
 
 /**
  * Sends the entirety of dws_node_matrix to $dest
  */
-function message_send_matrix($dest,$return_list = false,$use_this_uuid = false) {
+function message_send_matrix($uuid,$return_list = false,$use_this_uuid = false) {
 	// Use the defined UUID if none is specified
 	if (!isset($use_this_uuid))
 		$use_this_uuid = UUID;
@@ -76,21 +75,23 @@ function message_send_matrix($dest,$return_list = false,$use_this_uuid = false) 
 	// Add the matrix
 	$obj->matrix = $result;
 	
-	$reply = object_send($obj,$dest);
+	$reply = send_object($obj,$uuid);
 	unset($obj);
 	unset($db);
 	return get_object_from_response($reply);
 }
 
-function message_send_goodbye($dest) {
-	return message_send("goodbye",$dest);
+function message_send_goodbye($uuid) {
+	return message_send_by_id("goodbye",$uuid);
 }
 
-function message_send_heartbeat($dest) {
-	return message_send("heartbeat",$dest);
+function message_send_heartbeat($uuid) {
+	return message_send_by_id("heartbeat",$uuid);
 }
 
 function message_broadcast_heartbeat() {
+	// OBSOLETE
+	/*
 	$db = new dbConnection;
 	$obj = message_object_create("heartbeat");
 	$result = $db->query("SELECT uuid, host_name, port, uri FROM dws_nodes");
@@ -110,5 +111,6 @@ function message_broadcast_heartbeat() {
 	}
 	unset($db);
 	unset($obj);
+	*/
 }
 ?>

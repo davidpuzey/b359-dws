@@ -7,17 +7,15 @@
 				// Don't talk to yourself
 				//TODO: Only do it to review servers
 				if ($node['uuid'] != UUID) {
-					//echo("<p><i>Sending heartbeat to ".$node['uuid']."</i></p>");
-					$dest = compile_request_handler_URL($node['host_name'],$node['port'],$node['uri']);
-					$this->send_heartbeat($db,$dest,$node['uuid']);
+					$this->send_heartbeat($db,$node['uuid']);
 				}
 			}
 		}
-		private function send_heartbeat($db,$dest,$their_uuid) {
-			//$db = $this->db;
-			//var_dump($db);
+		private function send_heartbeat($db,$their_uuid) {
 			$timestamp = time();
-			$reply = message_send("heartbeat", $dest, array("your_uuid" => $their_uuid));
+			
+			$reply = message_send_by_id("heartbeat", $their_uuid, array("your_uuid" => $their_uuid));
+			
 			//echo("<p><b>MESSAGE FROM ".UUID." TO ".$their_uuid." START REPLY</b>".$reply."<b>END REPLY</b></p>");
 			$obj = get_object_from_response($reply);
 			if ($obj->success == "true") {

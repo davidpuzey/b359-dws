@@ -116,6 +116,8 @@ function setup_form() {
 }
 
 function connect_to_network($network_node,$my_uuid) {
+	die("You need to fix this to use sockets");
+	/*
 	// second argument is true, meaning it asks for a list of all nodes to be returned
 	$reply = message_send_hello($network_node,true,$my_uuid);
 	
@@ -149,7 +151,7 @@ function connect_to_network($network_node,$my_uuid) {
 		echo("<p>Reason: ".$reply->info."</p>");
 		return 0;
 	}
-	
+	*/
 }
 
 
