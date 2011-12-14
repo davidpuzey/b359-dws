@@ -56,6 +56,7 @@ function handle_input($input) {
 			println("help                             : This.");
 			println("exit                             : Self explanatory.");
 			println("setup [IP] [TCP port] [UDP port] : Set the current IP and port, and start the server.");
+			println("cmd [command] [IP] [TCP port]    : Send a command.");
 			println("start                            : Start the server with the current IP and port.");
 			println("stop                             : Stop the server.");
 			println("clients                          : List connected clients.");
@@ -68,26 +69,37 @@ function handle_input($input) {
 				$address = $all_input[2];
 				$port = $all_input[3];
 				
-				try {
-					$mysock = new easySocket($address,$port,SOL_TCP,false);
-					$mysock->set_blocking(true);
-					
-					// Set timeout to 4.5 seconds
-					$mysock->set_receive_timeout(4500000);
-					$mysock->write(object_to_response(array("cmd" => $message)));
-				} catch (Exception $e) {
-					echo("Failed to send message. Error: ".$e->getMessage()."\n");
-				}
-				if ($mysock)
-					$input = $mysock->read();
-				else
-					$input = null;
-				
-				var_dump($input);
+				$reply = send_command($message,$address,$port);
+				var_dump($reply);
 			}
 			break;
 		default:
 			println("Type 'help'.");
 	}
+}
+
+function send_object($object,$uuid,$timeout = 3000000) {
+	if ($record = nodeData::getInstance()->get_data_record($uuid)) {
+		return send_object_direct($object,$record['address'],$record['port'],$timeout);
+	} else {
+		throw new Exception("Invalid UUID");
+	}
+}
+
+function send_object_direct($object,$address,$port,$timeout = 3000000) {
+	try {
+		$mysock = new easySocket($address,$port,SOL_TCP,false);
+		$mysock->set_blocking(true);
+		$mysock->set_receive_timeout($timeout);
+		$mysock->write(object_to_response($object));
+	} catch (Exception $e) {
+		echo("Failed to send message. Error: ".$e->getMessage()."\n");
+	}
+	if ($mysock) {
+		$input = response_to_object($mysock->read());
+	} else {
+		$input = null;
+	}
+	return $input;
 }
 ?>

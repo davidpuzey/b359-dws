@@ -102,8 +102,11 @@ class easySocket {
 	}
 	
 	function read() {
-		$result = socket_read($this->mysock,2048);
-		
+
+		$result = @socket_read($this->mysock,2048);
+		if ($result === false) {
+			throw new Exception("socket_read() failed. Reason: " . socket_strerror(socket_last_error($this->mysock)));
+		}
 		// Sleep for quarter of a second to avoid concatenation of strings
 		//usleep(250000);
 		return $result;
