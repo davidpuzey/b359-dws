@@ -107,4 +107,12 @@
 			fclose($fileHandle);
 		}
 	}
+	
+	/**
+	 * deleteSettings - Deletes settings and removes the config ini
+	 */
+	function deleteSettings() {
+		$this->settings = array();
+		@unlink(CONFIG_INI);
+	}
 ?>
