@@ -3,9 +3,12 @@
 define("TIMEOUT",20);
 define("DEBUG",false);
 
+require('functions.php');
+/*
 // Functions
 require('println.php');
 require('server_commands.php');
+require('request_handler_functions.php');
 
 // Objects
 require('general/dbConnection.php');
@@ -15,6 +18,7 @@ require('general/basicTimer.php');
 require('general/clientConnection.php');
 require('general/nodeData.php');
 require('general/configureDatabase.php');
+*/
 
 // Globals
 $address = "127.0.0.1";
@@ -48,8 +52,10 @@ while ($process) {
 		//listen_to_clients();
 		
 		handle_incoming_connections();
+		/*
 		if ($timer_heartbeat->expired())
 			broadcast_heartbeat();
+		*/
 	}
 }
 
@@ -192,10 +198,12 @@ function listen_to_clients() {
 	}
 }
 */
+/*
 function handle_message($message) {
 	return $message;
 }
-
+*/
+/*
 function broadcast_heartbeat() {
 	global $clientConnections;
 	
@@ -223,5 +231,5 @@ function broadcast_heartbeat() {
 		}
 	}
 }
-
+*/
 ?> 

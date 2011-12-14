@@ -12,7 +12,7 @@
 		
 		// Check to make sure that there the 2 elements we expect
 		// (Really that there aren't less than 2
-		if (count($response_array) != 2) {
+		if (count($response_array) != 2)
 			return new ErrorHandler("Either no hash or no JSON.");
 		
 		$hash = $response_array[1];
@@ -58,8 +58,10 @@
 			return object_to_response($obj->makeRequestHandlerObject());
 		
 		// Check that the object has the needed structure
-		if (!is_string($obj->cmd))
-			return object_to_response((new ErrorHandler("JSON not formed properly."))->makeRequestHandlerObject());
+		if (!is_string($obj->cmd)) {
+			$error_handler_obj = new ErrorHandler("JSON not formed properly.");
+			return object_to_response($error_handler_obj->makeRequestHandlerObject());
+		}
 		
 		// Process relevant command
 		$class = "RH_".$obj->cmd;

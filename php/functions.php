@@ -3,6 +3,10 @@
 	require("message_functions.php");
 	require("JSON.php");
 	
+	require('println.php');
+	require('server_commands.php');
+	require('request_handler_functions.php');
+	
 	$autoload_dirs = array();
 	$hash_length = 32;
 	$hash_salt = "saltthing";
