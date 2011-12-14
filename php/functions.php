@@ -25,6 +25,16 @@
 		}
 	}
 	
+	function add_autoloader_dir($dir) {
+		global $autoload_dirs;
+		
+		if (!is_dir($dir))
+			return false;
+		
+		$autoload_dirs[] = $dir;
+		return true;
+	}
+	
 	function get_post_data($var, $default = null) {
 		return (isset($_POST[$var])) ? $_POST[$var] : $default;
 	}
@@ -72,16 +82,6 @@
 			return $obj;
 		}
 		return json_decode($json);
-	}
-	
-	function add_autoloader_dir($dir) {
-		global $autoload_dirs;
-		
-		if (!is_dir($dir))
-			return false;
-		
-		$autoload_dirs[] = $dir;
-		return true;
 	}
 	
 	function get_node($uuid) {
@@ -202,7 +202,7 @@
 	 */
 	function drop_database() {
 		@unlink("db/dws.db");
-		@unlink("meta/uuid.meta");
+		Settings::getInstance()->deleteSettings();
 	}
 	
 	/**
@@ -265,8 +265,8 @@
 	function get_my_details() {
 		$db = new dbConnection;
 		//$query = "SELECT host_name, port, uri, server_name, server_type, uuid FROM dws_nodes WHERE host_name = '{$_SERVER['SERVER_NAME']}' AND port = '{$_SERVER['SERVER_PORT']}' AND uri = '".dirname($_SERVER['REQUEST_URI'])."/'";
-		$meta_uuid = file_get_contents("meta/uuid.meta");
-		$query = "SELECT host_name, port, uri, server_name, server_type, uuid FROM dws_nodes WHERE uuid = $meta_uuid";
+		$meta = Settings::getInstance()->getParam("uuid", -1);
+		$query = "SELECT host_name, port, uri, server_name, server_type, uuid FROM dws_nodes WHERE uuid = '$uuid'";
 		$result = $db->query($query);
 		if (count($result) != 1) {
 			echo($query);
