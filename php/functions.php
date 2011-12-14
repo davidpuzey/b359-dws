@@ -334,7 +334,7 @@
 	}
 	
 	function node_matrix_update($client_uuid, $review_uuid) {
-		add_autoloader_dir("RequestHandler");
+		add_autoloader_dir("RequestHandler"); // This is stupid and should be done differently
 		$thing = new RH_updateNodeMatrix(array("cmd" => "updateNodeMatrix", "type" => SERVER_TYPE, "client_uuid" => $client_uuid, "review_uuid" => $review_uuid));
 		$obj = (object) $thing->process();
 		return $obj;

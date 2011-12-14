@@ -1,34 +1,27 @@
 <?php
-	function get_primary_review_server_id() {
-		$db = new dbConnection;
-		$result = $db->query("SELECT review_uuid FROM dws_node_matrix WHERE client_uuid = '". UUID ."'");
-		return $result[0]['review_uuid'];
-	}
-	if (check_database_exists())
-		$PRIMARY_REVIEW_SERVER_UUID = get_primary_review_server_id();
-	else
-		$PRIMARY_REVIEW_SERVER_UUID = -1;
-	
 	$USER_ID = "0:0";
 	
 	function change_primary_server($is_dead = false) {
-		global $PRIMARY_REVIEW_SERVER_UUID;
+		$primary_uuid = Settings::getInstance()->getParam("primary_uuid");
 		$db = new dbConnection;
-		if ($is_dead === true)
-			$db->query("UPDATE dws_nodes SET num_failures = num_failures + 1, is_up = '0' WHERE uuid = '$PRIMARY_REVIEW_SERVER_UUID'");
-		$arr = array($PRIMARY_REVIEW_SERVER_UUID);
+		if ($is_dead === true) {
+			$nodes = nodeData::getInstance();
+			$num_failures = $nodes->get_data($primary_uuid, 'num_failures');
+			$nodes->set_data($primary_uuid, 'num_failures', intval($num_failures) + 1);
+			$nodes->set_data($primary_uuid, 'is_up', '0');
+		}
+		$arr = array($primary_uuid);
 		$new_uuid = choose_random_unvisited_server($arr);
 		if ($new_uuid === null)
 			die("There are no review servers left :(.");
 		$response = node_matrix_change_primary($new_uuid);
-		$PRIMARY_REVIEW_SERVER_UUID = $new_uuid;
+		Settings::getInstance()->setParam("primary_uuid", $new_uuid);
 	}
 	
 	function client_message_send($cmd, $options = null, $attempts = 0) {
-		global $PRIMARY_REVIEW_SERVER_UUID;
 		global $USER_ID;
 		$options['user_id'] = $USER_ID;
-		$response = message_send_by_id($cmd, $PRIMARY_REVIEW_SERVER_UUID, $options);
+		$response = message_send_by_id($cmd, Settings::getInstance()->getParam("primary_uuid"), $options);
 		if ($response === "") {
 			if ($attempts >= 10)
 				die("There do no seem to be any available review servers, stick around for more fun after the break.");

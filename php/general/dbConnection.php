@@ -1,7 +1,7 @@
 <?php
 	/**
 	 * dbConnection -	Handle database connection stuff.
-	 * Constructor opens the database, if the native functions odn't
+	 * Constructor opens the database, if the native functions don't
 	 * work then we will attempt to use PDO.
 	 * Destructor closes the database.
 	 */
