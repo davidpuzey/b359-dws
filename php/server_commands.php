@@ -53,15 +53,15 @@ function handle_input($input) {
 				echo("\n");
 			break;
 		case "help":
-			println("help                             : This.");
-			println("exit                             : Self explanatory.");
+			println("help                             : Show this help.");
+			println("exit                             : Exit the server program.");
 			println("setup [IP] [TCP port] [UDP port] : Set the current IP and port, and start the server.");
-			println("cmd [command] [IP] [TCP port]    : Send a command.");
+			println("cmd [command] [IP] [TCP port]    : Send a command and dump the result.");
 			println("start                            : Start the server with the current IP and port.");
 			println("stop                             : Stop the server.");
 			println("clients                          : List connected clients.");
 			println("info                             : Display current IP and port configuration.");
-			println("clear                            : Blankity blanks everywhere.");
+			println("clear                            : Clear the screen.");
 			break;
 		case "cmd":
 			if (count($all_input) >= 4) {
@@ -69,7 +69,10 @@ function handle_input($input) {
 				$address = $all_input[2];
 				$port = $all_input[3];
 				
-				$reply = send_command($message,$address,$port);
+				$obj = new stdClass();
+				$obj->cmd = $message;
+				
+				$reply = send_object_direct($obj,$address,$port);
 				var_dump($reply);
 			}
 			break;
@@ -93,7 +96,8 @@ function send_object_direct($object,$address,$port,$timeout = 3000000) {
 		$mysock->set_receive_timeout($timeout);
 		$mysock->write(object_to_response($object));
 	} catch (Exception $e) {
-		echo("Failed to send message. Error: ".$e->getMessage()."\n");
+		//throw new Exception("Failed to send message. Error: ".$e->getMessage()."\n");
+		return null;
 	}
 	if ($mysock) {
 		$input = response_to_object($mysock->read());
