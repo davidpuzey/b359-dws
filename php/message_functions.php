@@ -13,11 +13,11 @@
 		
 	// Retrieve necessary items from the database
 	$db = new dbConnection;
-	$result = $db->query("SELECT port_tcp, port_udp, port_http, uri, server_name, server_type FROM dws_nodes WHERE uuid = ".$use_this_uuid);
+	$result = $db->query("SELECT port_tcp, port_udp, port_http, uri, server_name, host_name, server_type FROM dws_nodes WHERE uuid = ".$use_this_uuid);
 	
 	// Add host_name, port and uri to the message
 	$obj = message_object_create("hello");
-	$obj->host_name = $_SERVER['SERVER_NAME'];
+	$obj->host_name = $result[0]['host_name'];
 	$obj->server_name = $result[0]['server_name'];
 	$obj->port_tcp = $result[0]['port_tcp'];
 	$obj->port_udp = $result[0]['port_udp'];

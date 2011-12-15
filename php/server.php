@@ -35,6 +35,10 @@ $mysock_tcp = null;
 $mysock_udp = null;
 $database = new configureDatabase;
 $database->setup(SERVER_REVIEW);
+$server_name = "Unnamed server";
+
+// Store our own data
+set_my_data($server_name,$address,$port_tcp,$port_udp);
 
 //nodeData::getInstance()->add_node(456,"Node","CPE1704TKS","something",123456,"/location/",time(),7,1);
 
@@ -70,6 +74,7 @@ function start_listening() {
 	global $mysock_tcp;
 	global $mysock_udp;
 	global $serving;
+	global $server_name;
 	
 	// Create listening TCP socket
 	try {
@@ -92,6 +97,9 @@ function start_listening() {
 		shut_down_everything();
 		return;
 	}
+	
+	// Update our own data
+	set_my_data($server_name,$address,$port_tcp,$port_udp);
 	
 	$serving = true;
 	println("Server started");
