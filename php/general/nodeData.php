@@ -10,6 +10,7 @@ class nodeData {
 		
 		foreach ($node_data as $value) {
 			$this->node_data[$value['uuid']] = $value;
+			println("Loaded node ".$value['uuid']);
 		}
 	}
 	
@@ -93,6 +94,7 @@ class nodeData {
 		
 		// Update our array
 		$this->node_data[$new_uuid] = $node_data;
+		println("Added $new_uuid to node data");
 	}
 	
 	function remove_node($uuid) {
