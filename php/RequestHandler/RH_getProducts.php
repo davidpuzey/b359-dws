@@ -24,15 +24,14 @@
 			
 			foreach ($result as $key => $value) {
 				$product_id = "{$value['id']}:{$value['node_id']}";
-				$reviews_obj = new RH_getReviews(array('search'=>array('product_id'=>$product_id)));
-				$reviews = $reviews_obj->process();
-				$reviews = $reviews['result'];
+				$reviews = $this->query("SELECT * FROM dws_reviews WHERE product_id = '$product_id'");
 				$num_reviews = count($reviews);
 				$avg_rating = 0;
 				foreach ($reviews as $rev) {
 					$avg_rating += intval($rev['rating']);
 				}
-				$avg_rating = $avg_rating / $num_reviews;
+				if ($avg_rating != 0)
+					$avg_rating = $avg_rating / $num_reviews;
 				$result[$key]['avg_rating'] = $avg_rating;
 				$result[$key]['num_reviews'] = $num_reviews;
 			}
