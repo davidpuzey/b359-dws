@@ -268,7 +268,7 @@
 		$db = new dbConnection;
 		//$query = "SELECT host_name, port, uri, server_name, server_type, uuid FROM dws_nodes WHERE host_name = '{$_SERVER['SERVER_NAME']}' AND port = '{$_SERVER['SERVER_PORT']}' AND uri = '".dirname($_SERVER['REQUEST_URI'])."/'";
 		$meta = Settings::getInstance()->getParam("uuid", -1);
-		$query = "SELECT host_name, port, uri, server_name, server_type, uuid FROM dws_nodes WHERE uuid = '$uuid'";
+		$query = "SELECT host_name, port_tcp, port_udp, port_http, uri, server_name, server_type, uuid FROM dws_nodes WHERE uuid = '$meta'";
 		$result = $db->query($query);
 		if (count($result) != 1) {
 			echo($query);
@@ -279,23 +279,29 @@
 		}
 	}
 	
-	/*
+	
 	if (check_database_exists()) {
 		$details = get_my_details();
 		define("UUID", $details['uuid']);
 		define("SERVER_TYPE", $details['server_type']);
 		define("SERVER_NAME", $details['server_name']);
 		define("HOST_NAME", $details['host_name']);
-		define("PORT", $details['port']);
+		define("PORT", -1);
+		define("PORT_UDP", $details['port_udp']);
+		define("PORT_TCP", $details['port_tcp']);
+		define("PORT_HTTP", $details['port_http']);
 		define("URI", $details['uri']);
-	} else {*/
+	} else {
 		define("UUID", -1);
 		define("SERVER_TYPE", -1);
 		define("SERVER_NAME", null);
 		define("HOST_NAME", null);
 		define("PORT", -1);
+		define("PORT_TCP", -1);
+		define("PORT_UDP", -1);
+		define("PORT_HTTP", -1);
 		define("URI", null);
-	/*}*/
+	}
 	
 	/**
 	 * $nodes is an object containing lots of nodes to be added to dws_nodes
