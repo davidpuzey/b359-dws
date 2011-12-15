@@ -55,11 +55,13 @@ function handle_input($input) {
 		case "help":
 			println("help                             : Show this help.");
 			println("exit                             : Exit the server program.");
+			println("reset                            : Clears local data and stops the server.");
 			println("setup [IP] [TCP port] [UDP port] : Set the current IP and port, and start the server.");
 			println("cmd [command] [IP] [TCP port]    : Send a command and dump the result.");
 			println("start                            : Start the server with the current IP and port.");
 			println("stop                             : Stop the server.");
-			println("clients                          : List connected clients.");
+			//println("clients                          : List connected clients.");
+			println("nodes                            : List known nodes.");
 			println("info                             : Display current IP and port configuration.");
 			println("clear                            : Clear the screen.");
 			break;
@@ -75,6 +77,19 @@ function handle_input($input) {
 				$reply = send_object_direct($obj,$address,$port);
 				var_dump($reply);
 			}
+			break;
+		case "nodes":
+			$node_data = nodeData::getInstance()->get_all_data();
+			foreach ($node_data as $node) {
+				println($node['uuid']);
+			}
+			break;
+		case "reset":
+			stop_listening();
+			$cdb = new configureDatabase();
+			$cdb->reset();
+			unset($cdb);
+			println("Server reset");
 			break;
 		default:
 			println("Type 'help'.");

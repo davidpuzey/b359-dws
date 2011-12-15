@@ -89,7 +89,6 @@ class nodeData {
 		
 		// Update the database
 		$imploded = "'".implode("','",$node_data)."'";
-		echo("\n\nINSERT INTO dws_nodes VALUES (".$imploded.")\n\n");
 		$this->db->query("INSERT INTO dws_nodes VALUES (".$imploded.")");
 		
 		// Update our array

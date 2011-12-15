@@ -309,7 +309,9 @@
 			$server_type = $node->server_type;
 			$server_name = $node->server_name;
 			$host_name = $node->host_name;
-			$port = $node->port;
+			$port_tcp = $node->port_tcp;
+			$port_udp = $node->port_udp;
+			$port_http = $node->port_http;
 			$uri = $node->uri;
 			$last_response = $node->last_response;
 			$num_failures = 0;
@@ -321,11 +323,11 @@
 			$result = $db->query("SELECT uuid FROM dws_nodes WHERE uuid = ".$uuid);
 			if (!$result) {
 				// Node does not exist, add it into the table
-				$db->query("INSERT INTO dws_nodes (uuid, server_type, server_name, host_name, port, uri, last_response, num_failures, is_up) VALUES ('$uuid', '$server_type', '$server_name', '$host_name', '$port', '$uri', '$last_response', '$num_failures', '$is_up')");
+				$db->query("INSERT INTO dws_nodes (uuid, server_type, server_name, host_name, port_tcp, port_udp, port_http, uri, last_response, num_failures, is_up) VALUES ('$uuid', '$server_type', '$server_name', '$host_name', '$port_tcp', '$port_udp', '$port_http', '$uri', '$last_response', '$num_failures', '$is_up')");
 			} else if ($update) {
 				// Node does exist, and we want to update it
 				// IMPORTANT: num_failures is not updated to avoid it being reset
-				$db->query("UPDATE dws_nodes SET (server_type = '$server_type', server_name = '$server_name', host_name = '$host_name', port = '$port', uri = '$uri', last_response = '$last_response', is_up = '$is_up') WHERE uuid = '$uuid'");
+				$db->query("UPDATE dws_nodes SET (server_type = '$server_type', server_name = '$server_name', host_name = '$host_name', port_tcp = '$port_tcp', port_udp = '$port_udp', port_http = '$port_http', uri = '$uri', last_response = '$last_response', is_up = '$is_up') WHERE uuid = '$uuid'");
 			}
 		}
 		unset($db);

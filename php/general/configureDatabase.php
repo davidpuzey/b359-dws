@@ -16,7 +16,7 @@ class configureDatabase {
 			$sql[] = "CREATE TABLE dws_message_queue(id integer PRIMARY KEY, message text, num_failures integer, timestamp integer);";
 			
 			// Stores review servers and clients
-			$sql[] = "CREATE TABLE dws_nodes(uuid integer, server_type text, server_name text, host_name text, port integer, uri text, last_response integer, num_failures integer, is_up integer, PRIMARY KEY (uuid))";
+			$sql[] = "CREATE TABLE dws_nodes(uuid integer, server_type text, server_name text, host_name text, port_tcp integer, port_udp integer, port_http integer, uri text, last_response integer, num_failures integer, is_up integer, PRIMARY KEY (uuid))";
 		
 			// Which clients talk to which review servers
 			$sql[] = "CREATE TABLE dws_node_matrix(client_uuid integer PRIMARY KEY, review_uuid integer)";
@@ -32,6 +32,11 @@ class configureDatabase {
 	
 	function drop() {
 		@unlink("db/dws.db");
+	}
+	
+	function reset() {
+		$this->drop();
+		$this->setup();
 	}
 	
 	 function is_setup() {

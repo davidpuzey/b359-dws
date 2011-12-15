@@ -15,6 +15,7 @@
 			$server_name = $this->getRequiredParam('server_name');
 			$port_tcp = $this->getRequiredParam('port_tcp');
 			$port_udp = $this->getRequiredParam('port_udp');
+			$port_http = $this->getRequiredParam('port_http');
 			$uri = $this->getParam('uri','');
 			$return_list = $this->getParam('return_list', false);
 			
@@ -30,8 +31,8 @@
 				return false;
 			}
 			else {
-				$this->query("DELETE FROM dws_nodes WHERE host_name = '$host_name' AND port_tcp = '$port_tcp' AND port_udp = '$port_udp'");
-				$sql = "INSERT INTO dws_nodes (uuid, server_type, server_name, host_name, port_tcp, port_udp, uri, last_response, num_failures, is_up) VALUES ('$uuid', '$server_type', '$server_name', '$host_name', '$port_tcp', '$port_udp', '$uri', '$last_response', 0, 1)";
+				$this->query("DELETE FROM dws_nodes WHERE host_name = '$host_name' AND port_tcp = '$port_tcp' AND port_udp = '$port_udp' AND port_http = '$port_http'");
+				$sql = "INSERT INTO dws_nodes (uuid, server_type, server_name, host_name, port_tcp, port_udp, port_http, uri, last_response, num_failures, is_up) VALUES ('$uuid', '$server_type', '$server_name', '$host_name', '$port_tcp', '$port_udp', '$port_http', '$uri', '$last_response', 0, 1)";
 				$this->query($sql);
 			}
 			
