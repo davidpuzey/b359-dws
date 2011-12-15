@@ -31,7 +31,7 @@
 					<div class="name"><?php echo $product['name']?></div>
 					<div class="category"><?php echo $product['category']?></div>
 					<div>
-						<div class="rating-background"><div class="rating" style="width: <?php echo ($product['rating']*20)?>%"></div><?php echo $product['rating']?></div>
+						<div class="rating-background"><div class="rating" style="width: <?php echo ($product['avg_rating']*20)?>%"></div><?php echo $product['avg_rating']?></div>
 						<div class="reviews"><?php echo $product['num_reviews']?></div>
 					</div>
 				</div>
