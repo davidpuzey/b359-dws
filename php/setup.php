@@ -97,8 +97,8 @@ function setup_form() {
 	?>
 	<form action="<?php echo "http://".$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI']; ?>" method="post">
 	
-		<p>Server name: <input type="text" name="server_name" value="<?php echo $default_name_ucfirst; ?>"/><br />
-		<img src="http://img.pokemondb.net/artwork/<?php echo $default_name; ?>.jpg">
+		<p>Server name: <input type="text" name="server_name" value="<?php echo $default_name_ucfirst; ?>" onChange="document.getElementById('serv_img').src='http://img.pokemondb.net/artwork/'+this.value.toLowerCase()+'.jpg';"/><br />
+		<img id="serv_img" src="http://img.pokemondb.net/artwork/<?php echo $default_name; ?>.jpg">
 		<p>Server UUID: <input type="text" name="uuid" value="<?php echo rand(0,2147483647); ?>"/> (0 to 2147483647, inclusive)<br />
 		<p>Server port: <input type="text" name="port" value="<?php echo $_SERVER['SERVER_PORT']; ?>"/><br />
 		<p>Server root: <input type="text" name="root" value="<?php echo dirname($_SERVER['REQUEST_URI']);?>/"/><br />
