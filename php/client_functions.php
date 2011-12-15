@@ -33,7 +33,7 @@
 	
 	function get_products($search = null) {
 		$options = null;
-		if (is_array($search) || is_object($search))
+		if (is_string($search) || is_array($search) || is_object($search))
 			$options['search'] = $search;
 		$result = (array) client_message_send("getProducts", $options);
 		if (isset($result['result']))
