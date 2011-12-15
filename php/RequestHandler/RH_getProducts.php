@@ -24,7 +24,9 @@
 			
 			foreach ($result as $key => $value) {
 				$product_id = "{$value['id']}:{$value['node_id']}";
-				$reviews = new RH_getReviews(array('search'=>array('product_id'=>$product_id)));
+				$reviews_obj = new RH_getReviews(array('search'=>array('product_id'=>$product_id)));
+				$reviews = $reviews_obj->process();
+				$reviews = $reviews['result'];
 				$num_reviews = count($reviews);
 				$avg_rating = 0;
 				foreach ($reviews as $rev) {
