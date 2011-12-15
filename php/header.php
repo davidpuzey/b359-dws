@@ -1,6 +1,6 @@
 <div class="header">
 	<h3 class="title"><a href='.'>Reviewedex</a></h3>
-	<form class="search" onSubmit="return false;">
+	<form class="search" action="index.php" method="get" onSubmit="return false;">
 		<input type="text" name="search">
 		<input type="submit" value="Search">
 	</form>

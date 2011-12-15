@@ -2,9 +2,13 @@
 <?php
 	include("functions.php");
 	requireDbSetup();
+	
+	$include = get_get_data('search', null);
 	$products = array();
-	$products = get_products();
-	#var_dump($products);
+	// If there is anything other than a searchable value (ie a string or an integer) then just get all the products.
+	if (!is_string($search))
+		$search = null;
+	$products = search_products($search);
 ?>
 
 <!doctype html>
@@ -28,7 +32,7 @@
 					<div class="category"><?php echo $product['category']?></div>
 					<div>
 						<div class="rating-background"><div class="rating" style="width: <?php echo ($product['rating']*20)?>%"></div><?php echo $product['rating']?></div>
-						<div class="reviews">(36 Reviews)</div>
+						<div class="reviews"><?php echo $product['num_reviews']?></div>
 					</div>
 				</div>
 			</a>
