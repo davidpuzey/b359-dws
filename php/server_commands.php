@@ -43,6 +43,7 @@ function handle_input($input) {
 			println("Address is $address");
 			println("TCP port is $port_tcp");
 			println("UDP port is $port_udp");
+			println("UUID is ".Settings::getInstance()->getParam("uuid", -1));
 			if ($serving)
 				println("Server is running");
 			else

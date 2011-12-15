@@ -43,6 +43,7 @@
 				$sth->execute();
 				return $sth->fetchAll();
 			} else {
+				//var_dump(debug_backtrace());
 				return sqlite_array_query($this->dbhandle, $sql);
 			}
 		}

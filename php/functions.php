@@ -271,9 +271,10 @@
 		$query = "SELECT host_name, port_tcp, port_udp, port_http, uri, server_name, server_type, uuid FROM dws_nodes WHERE uuid = '$meta'";
 		$result = $db->query($query);
 		if (count($result) != 1) {
-			echo($query);
-			var_dump($result);
-			die("<p>This server does not exist. Please <a href='setup.php'>run setup</a></p>");
+			echo("No UUID defined yet");
+			//echo($query);
+			//var_dump($result);
+			//die("<p>This server does not exist. Please <a href='setup.php'>run setup</a></p>");
 		} else {	
 			return $result[0];
 		}
@@ -282,7 +283,8 @@
 	
 	if (check_database_exists()) {
 		$details = get_my_details();
-		define("UUID", $details['uuid']);
+		//define("UUID", $details['uuid']);
+		define("UUID", Settings::getInstance()->getParam("uuid", -1));
 		define("SERVER_TYPE", $details['server_type']);
 		define("SERVER_NAME", $details['server_name']);
 		define("HOST_NAME", $details['host_name']);
